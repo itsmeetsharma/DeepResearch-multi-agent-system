@@ -19,8 +19,26 @@ def _llm(model_name):
     """Create a ChatGroq instance for a given model."""
     return ChatGroq(model=model_name, temperature=0)
 
-# LLM with automatic fallbacks (used by LCEL chains: writer, critic)
-llm = _llm(MODELS[0]).with_fallbacks([_llm(m) for m in MODELS[1:]])
+# Lazy initialization for LLM with automatic fallbacks
+_llm_chain = None
+
+def get_llm():
+    """Lazy load LLM chain when first needed."""
+    global _llm_chain
+    if _llm_chain is None:
+        import os
+        if not os.getenv("GROQ_API_KEY"):
+            raise ValueError(
+                "GROQ_API_KEY environment variable not set. "
+                "Please set it in Streamlit Secrets or environment variables."
+            )
+        _llm_chain = _llm(MODELS[0]).with_fallbacks([_llm(m) for m in MODELS[1:]])
+    return _llm_chain
+
+# Legacy support - allow imports to work
+def get_llm_lazy():
+    """Alias for backwards compatibility."""
+    return get_llm()
 
 
 # 1st agent — builds one agent per model, chains them as fallbacks
@@ -67,7 +85,12 @@ Structure the report as:
 Be detailed, factual and professional."""),
 ])
 
-writer_chain = writer_prompt | llm | StrOutputParser()
+def get_writer_chain():
+    """Lazy load writer chain."""
+    return writer_prompt | get_llm() | StrOutputParser()
+
+# Legacy support
+writer_chain = None
 
 # Critic_chain (Using LCEL pipeline)
 
@@ -94,4 +117,9 @@ One line verdict:
 ..."""),
 ])
 
-Critic_chain = critic_prompt | llm | StrOutputParser()
+def get_critic_chain():
+    """Lazy load critic chain."""
+    return critic_prompt | get_llm() | StrOutputParser()
+
+# Legacy support
+Critic_chain = None

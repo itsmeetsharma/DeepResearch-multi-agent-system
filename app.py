@@ -753,7 +753,7 @@ with tab_research:
         st.session_state["pipe_topic"] = topic
         state = st.session_state["pipe"]
 
-        from agents import build_search_agent, build_reader_agent, writer_chain, Critic_chain
+        from agents import build_search_agent, build_reader_agent, get_writer_chain, get_critic_chain
 
         tracker_ph = st.empty()
         output = st.container()
@@ -801,7 +801,7 @@ with tab_research:
                         f"SEARCH RESULTS :\n{state['search'][:3000]}\n\n"
                         f"DETAILED SCRAPED CONTENT :\n{state['scraped'][:3000]}"
                     )
-                    state["report"] = writer_chain.invoke({"topic": topic, "research": combined})
+                    state["report"] = get_writer_chain().invoke({"topic": topic, "research": combined})
                     s.update(label="Writer — done", state="complete", expanded=False)
                     st.markdown(state["report"][:800] + "…")
 
@@ -810,7 +810,7 @@ with tab_research:
                 render_tracker(3)
             with output:
                 with st.status("Critic — reviewing report…", expanded=True) as s:
-                    state["feedback"] = Critic_chain.invoke({"report": state["report"]})
+                    state["feedback"] = get_critic_chain().invoke({"report": state["report"]})
                     s.update(label="Critic — done", state="complete", expanded=False)
 
             with tracker_ph.container():
@@ -867,10 +867,10 @@ with tab_critic:
         go_critic = st.button("Analyze →", disabled=not user_report, key="critic_btn", use_container_width=True)
 
     if go_critic and user_report:
-        from agents import Critic_chain
+        from agents import get_critic_chain
         with st.status("Critic analyzing…", expanded=True) as sc:
             try:
-                fb = Critic_chain.invoke({"report": user_report})
+                fb = get_critic_chain().invoke({"report": user_report})
                 st.session_state["solo_fb"] = fb
                 sc.update(label="Analysis complete", state="complete", expanded=False)
             except Exception as e:

@@ -1,0 +1,67 @@
+# ==========================================
+# Multi-Agent Research System Requirements
+# Python Version: 3.11+
+# ==========================================
+
+# ----------------------
+# LangChain Ecosystem
+# ----------------------
+langchain>=1.0.0
+langchain-core>=1.0.0
+langchain-groq>=1.0.0
+
+# ----------------------
+# Environment Variables
+# ----------------------
+python-dotenv>=1.0.0
+
+# ----------------------
+# Tavily Search Tool
+# ----------------------
+tavily-python>=0.3.0
+
+# ----------------------
+# Web Scraping
+# ----------------------
+beautifulsoup4>=4.12.0
+requests>=2.31.0
+lxml>=5.0.0
+html5lib>=1.1
+
+# ----------------------
+# Async Support
+# ----------------------
+aiohttp>=3.12.0
+
+# ----------------------
+# Data Processing
+# ----------------------
+pandas>=2.0.0
+
+# ----------------------
+# Validation / Parsing
+# ----------------------
+pydantic>=2.7.4,<3
+
+# ----------------------
+# Tokenization
+# ----------------------
+tiktoken>=0.6.0
+
+# ----------------------
+# Logging / Utilities
+# ----------------------
+rich>=13.7.0
+tenacity>=8.2.0
+
+# ----------------------
+# Streamlit UI & Deployment
+# ----------------------
+streamlit==1.48.0
+watchdog==6.0.0
+
+# ----------------------
+# Json Handling improvements
+# ----------------------
+orjson>=3.9.0
+

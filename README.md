@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧠 DeepResearch — AI Multi-Agent Research System
+#  DeepResearch — AI Multi-Agent Research System
 
 **Four specialized AI agents collaborate to deliver publication-ready research reports in seconds.**
 

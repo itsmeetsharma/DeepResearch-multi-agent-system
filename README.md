@@ -95,9 +95,9 @@ streamlit run app.py
 python pipeline.py
 ```
 
-## 🎨 Screenshots
+## 🔗 Link
 
-> _Add screenshots of your running app here_
+> running app here: https://deepresearch-multi-agent-system.streamlit.app/?
 
 ## 📄 How It Works
 
